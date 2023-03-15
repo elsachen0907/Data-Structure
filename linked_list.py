@@ -1,10 +1,15 @@
+# import sys
+# print(sys.getrecursionlimit())
+# sys.setrecursionlimit(5000)
 class Node:
-    data = None
-    next_node = None
+    # data = None
+    # next_node = None
 
 
-    def __init__(self, data):
+    def __init__(self, data, next_node = None):
         self.data = data
+        self.next_node = next_node
+
 
     def __repr__(self):
         return "<Node data: %s>" %self.data
@@ -18,25 +23,27 @@ class LinkedList:
     # constructor
     def __init__(self):
         self.head = None
+        self.__count = 0
 
 # head is none, then no list
     def is_empty(self):
-        return self.head== None
+        return self.headn== None
     
     def size(self):
         """
         return the number of nodes in the list
         takes O(n) times
         """
-        current = self.head
-        count = 0
+        # current = self.head
+        # count = 0
 
-        while current:
-            # count = count + 1
-            count += 1
-            # after increment, then point to the next node
-            current = current.next_node
-        return count    
+        # while current:
+        #     # count = count + 1
+        #     count += 1
+        #     # after increment, then point to the next node
+        #     current = current.next_node
+        # return count    
+        return self.__count
     
 
     def add(self, data):
@@ -44,10 +51,12 @@ class LinkedList:
         Add a new node containing data at head of list
         constant time O(1) time
         """
-        new_node = data
+        # new_node = data
         # set the new node to head of the node
-        new_node.next_node = self.head
+        new_node = Node(data, next_node=self.head)
         self.head = new_node
+        # increment the count by 1
+        self.__count += 1
 
 
     def search(self,key):
@@ -122,5 +131,36 @@ class LinkedList:
 
         return None
 
+    # find the index (input is the index we had)
+    def node_at_index(self, index):
+        if index >= self.__count:
+            raise IndexError('index out of range')
+        
+        if index == 0:
+            return self.head
+        else:
+            current = self.head
+            position = 0
 
+        while position < index:
+            current = current.next_node
+            position += 1
 
+        return current
+        
+    def __repr__(self):
+        """
+        Return a string representation of the list.
+        Takes O(n) time.
+        """
+        nodes = []
+        current = self.head
+        while current:
+            if current is self.head:
+                nodes.append("[Head: %s]" % current.data)
+            elif current.next_node is None:
+                nodes.append("[Tail: %s]" % current.data)
+            else:
+                nodes.append("[%s]" % current.data)
+            current = current.next_node
+        return  '-> '.join(nodes)    
